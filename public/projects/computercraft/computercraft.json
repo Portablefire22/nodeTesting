@@ -1,6 +1,8 @@
 {
     "Name": "Computercraft Webserver",
     "Languages": "NodeJS",
-    "InternalName": "computer",
-    "Order": 1
+    "InternalName": "computercraft",
+    "Order": 1,
+    "Desc": "NodeJS webserver that utilises websockets to connect with a computercraft turtle running a compatible program. In the current iteration the two compatible programs are for mining and storage. The mining program maps out the surrounding terrain, allowing for the local world to be viewed in a 3D rendered environment using 'ThreeJS', and the storage program submits a json file of multiple chests to create a single chest system. This chest system can then be used to store and retrieve items similar to a ME system from Applied Energistics 2 and can be modified to allow for autocrafting of items.",
+    "githubLink": "https://github.com/Portablefire22/Computercraft-Web-Server"
 }

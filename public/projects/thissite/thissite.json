@@ -2,5 +2,7 @@
     "Name": "Portfolio Site",
     "Languages": "NodeJS",
     "InternalName": "Site",
-    "Order": 0
+    "Order": 0,
+    "Desc": "NodeJS website created to develop front and backend skills with the purpose of showcasing various projects that I have created.",
+    "githubLink": "https://github.com/Portablefire22/nodeTesting"
 }

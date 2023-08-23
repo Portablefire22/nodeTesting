@@ -24,6 +24,10 @@ footer a {
     text-align: center;
 }
 
+a.project {
+    color: var(--bs-body-color);
+}
+
 footer {
     bottom: 0%;
     position: absolute;

@@ -1,8 +1,30 @@
 body {
-  padding: 50px;
+
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+footer a {
+    color: var(--bs-secondary-color);
+}
+
+.centre {
+    top: 10%;
+    margin: auto;
+    width: 50%;
+    
+    padding: 5%;
+    left: 25%;
+    position: absolute;
+    text-align: center;
+}
+
+footer {
+    bottom: 0%;
+    position: absolute;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+    left: 0;
+    right: 0;
 }

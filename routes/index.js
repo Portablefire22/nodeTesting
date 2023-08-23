@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var projectInformation = require('./scripts/projectInformation.js');
+var projectInformation = require('../scripts/projectInformation.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) { 

@@ -15,6 +15,12 @@ footer a {
     padding: 5%;
     left: 25%;
     position: absolute;
+
+    background-color: var(--bs-tertiary-bg);
+    border-radius: 2%;
+}
+
+.centre h1 {
     text-align: center;
 }
 

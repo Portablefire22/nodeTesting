@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var projectInformation = require('./../scripts/projectInformation.js');
+var path = require('path');
+const fs = require('fs');
 
 router.get('/', function(req, res, next){
     res.render('pages/projects', {

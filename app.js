@@ -2,7 +2,10 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var sessions = require('express-session');
 var logger = require('morgan');
+const fs = require('fs');
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -30,10 +33,17 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/projects', projectRouter);
 
-// Session shit
-
+// Session stuff
+//
+// Reading list:
+// https://rrawat.com/blog/sessions-vs-tokens-authentication
+// https://www.section.io/engineering-education/session-management-in-nodejs-using-expressjs-and-express-session/
+const oneDay = 1000 * 60 * 60 * 24;
 app.use(sessions({
-    secret
+    secret: secretsJson.secret,
+    saveUninitialized: true,
+    cookie: { maxAge: oneDay },
+    resave: false
 }))
 
 

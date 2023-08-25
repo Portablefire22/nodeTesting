@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+
+    <body>
+        <header>
+            <%- include('../partials/header'); %>
+        </header>
+        <main>
+            <div class="container">
+                <div class="centre">
+                    <h1>Register</h1>
+                    <p><small>Probably best if you don't :3</small></p>
+                    <form action="/users/" method="POST">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" aria-describedby"usernameHelp" placeholder="Enter Username" name="user_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" id="email" aria-describedby"emailHelp" placeholder="Enter Email" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" aria-describedby"passwordHelp" placeholder="Enter Password" name="password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <%- include('../partials/footer'); %>
+        </footer>
+    </body>
+</html>

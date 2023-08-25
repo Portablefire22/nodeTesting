@@ -7,7 +7,12 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/register', function(req, res, next) {
-    res.render('pages/register', { title: 'Express'});
-})
+    res.render('pages/register', { title: 'Express'}); 
+});
+
+router.post('/', function(req, res, next) {
+    console.log(`Got information:`, req.body);
+    res.sendStatus(200);
+});
 
 module.exports = router;

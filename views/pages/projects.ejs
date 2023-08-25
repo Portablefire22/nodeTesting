@@ -9,18 +9,20 @@
         <%- include('../partials/header'); %>
     </header>
         <main>
-            <div class="centre">
-                <h1>Projects</h1>
-                <ul class="list-group list-group-flush">
-                    <% for (var i = 0; i < projectInfo.length; i++) { %>
-                        <li class="list-group-item">
-                            <h3><a class="project" href=<%=projectInfo[i].InternalName%>><%= projectInfo[i].Name %></a></h3>
-                            <p>Language(s): <%= projectInfo[i].Languages %></p>
-                            <small><p><%= projectInfo[i].Desc.slice(0,100) %><% if (projectInfo[i].Desc.length > 100) { %>...<% }%></p></small>
-                        </li>    
-                    <% } %> 
-                </ul>
-        </div>
+            <div class="container">
+                <div class="centre">
+                    <h1>Projects</h1>
+                    <ul class="list-group list-group-flush">
+                        <% for (var i = 0; i < projectInfo.length; i++) { %>
+                            <li class="list-group-item">
+                                <h3><a class="project" href=<%=projectInfo[i].InternalName%>><%= projectInfo[i].Name %></a></h3>
+                                <p>Language(s): <%= projectInfo[i].Languages %></p>
+                                <small><p><%= projectInfo[i].Desc.slice(0,100) %><% if (projectInfo[i].Desc.length > 100) { %>...<% }%></p></small>
+                            </li>    
+                        <% } %> 
+                    </ul>
+                </div>
+            </div>
     </main>
 
     <footer>

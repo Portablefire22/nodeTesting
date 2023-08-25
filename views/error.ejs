@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%- include('partials/head'); %>
-</head>
+    <head>
+        <%- include('partials/head'); %>
+    </head>
 
-<body class="container">
-    
+    <body class="container">
+        
 
-    <main>
-        <div class="jumbotron">
-            <h1> Error <%- errorStatus%>
-            
-        </div>
-    </main>
+        <main>
+            <div class="jumbotron">
+                <h1> Error <%- errorStatus%> </h1>
+                <p> <% if(errorStatus.toString().includes('404')) { %>
+                    Page not found 
+                    <% } else if(errorStatus.toString().includes('500')) { %>
+                    Internal Server Error
+                    <% } %>
+                </p>
+            </div>
+        </main>
 
-</body>
+    </body>
 </html>

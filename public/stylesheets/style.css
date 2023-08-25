@@ -14,10 +14,17 @@ footer a {
     
     padding: 5%;
     left: 25%;
-    position: absolute;
+    /*position: absolute;*/
 
     background-color: var(--bs-tertiary-bg);
     border-radius: 2%;
+}
+
+.container {
+    height: 90%;
+    top: 10%;
+    width: 100%;
+    padding-top: 10%;
 }
 
 .centre h1 {

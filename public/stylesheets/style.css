@@ -21,10 +21,14 @@ footer a {
 }
 
 .container {
-    height: 90%;
+    min-height: 20%;
     top: 10%;
+    bottom:2%;
     width: 100%;
-    padding-top: 10%;
+    padding-top: 5%;
+    padding-bottom: 10%;
+
+
 }
 
 .centre h1 {
@@ -36,12 +40,28 @@ a.project {
 }
 
 footer {
-    bottom: 0%;
-    position: absolute;
+    bottom: 0;
+    z-index: -1;
+    position:fixed;
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    width: 20%;
+    width: 100%;
+    height:1.5em;
     left: 0;
     right: 0;
+}
+.custom-container-fluid {
+    display: flex;
+    flex-wrap: inherit;
+    align-items: center;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.navbar-brand.right{
+    right: 0;
+    padding-top: 1%;
+    top: var(--bs-navbar-brand-padding-y);
+    position: absolute;
 }

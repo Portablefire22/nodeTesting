@@ -1,12 +1,14 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-//var cookieParser = require('cookie-parser');
+var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var logger = require('morgan');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 require('dotenv').config();
+
+const db = require('./scripts/dbController.js');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -15,16 +17,12 @@ var projectRouter = require('./routes/projects');
 var app = express();
 
 // SQL connection
-const mysql = require('mysql');
+const mysql = require('mariadb');
 
 const mysqlStore = require('express-mysql-session')(session);
 
-const PORT= process.env.APP_PORT;
-const IN_PROD = process.env.NODE_ENV === 'production'
-const TWO_HOURS = 1000 * 60 * 60 * 2
-
 const options ={
-    connectionLimit: 10,
+    connectionLimit: 1,
     password: process.env.DB_PASS,
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -33,6 +31,8 @@ const options ={
     createDatabaseTable: true
 }
 
+const pool = mysql.createPool(options);
+app.use(cookieParser());
 const  sessionStore = new mysqlStore(options);app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -54,6 +54,22 @@ app.use(session({
         secure: process.env.NODE_ENV === "production"
     }
 }))
+
+app.use(async function(req,res,next){
+    try {
+        if (!(typeof(req.session.userId) === 'undefined')){
+            console.log(req.session.userId);
+            console.log(await db.getUserById(req.session.userId[0].id));
+            res.locals.user = {username: (await db.getUserById(req.session.userId[0].id))[0].username}; 
+        } else {
+            res.locals.user = {username: null};
+        }
+    }
+    catch(e) {
+        console.log(e);
+    }
+    next();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+
+    <body>
+        <header>
+            <%- include('../partials/header'); %>
+        </header>
+        <main>
+            <div class="container">
+                <div class="centre">
+                    <h1>Login</h1>
+                    <p><small>You made a mistake registering here :3</small></p>
+                    <form action="/users/login" method="POST">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" aria-describedby"usernameHelp" placeholder="Enter Username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" aria-describedby"passwordHelp" placeholder="Enter Password" name="password">
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <%- include('../partials/footer'); %>
+        </footer>
+    </body>
+</html>

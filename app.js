@@ -1,11 +1,12 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
-var sessions = require('express-session');
+//var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var logger = require('morgan');
 const fs = require('fs');
-
+const bodyParser = require('body-parser');
+require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -13,10 +14,46 @@ var projectRouter = require('./routes/projects');
 
 var app = express();
 
-// Is it best to store secrets in a json file?
-// lets find out
-var secretsJson = JSON.parse(fs.readFileSync(`secrets.json`, 'utf-8'));
+// SQL connection
+const mysql = require('mysql');
 
+const mysqlStore = require('express-mysql-session')(session);
+
+const PORT= process.env.APP_PORT;
+const IN_PROD = process.env.NODE_ENV === 'production'
+const TWO_HOURS = 1000 * 60 * 60 * 2
+
+const options ={
+    connectionLimit: 10,
+    password: process.env.DB_PASS,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    port: process.env.DB_PORT,
+    database: process.env.DB_NAME,
+    createDatabaseTable: true
+}
+
+const  sessionStore = new mysqlStore(options);app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+app.use(bodyParser.json())
+
+const oneDay = 1000 * 60 * 60 * 24;
+
+app.use(session({
+    name: process.env.SESSION_NAME,
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+    secret: process.env.SESSION_SECRET,
+    cookie: {
+        httpOnly: true,
+        maxAge: oneDay,
+        sameSite: true,
+        secure: process.env.NODE_ENV === "production"
+    }
+}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,28 +62,18 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 console.log(`${path.join(__dirname + '/public')}`);
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/projects', projectRouter);
 
 // Session stuff
 //
 // Reading list:
 // https://rrawat.com/blog/sessions-vs-tokens-authentication
 // https://www.section.io/engineering-education/session-management-in-nodejs-using-expressjs-and-express-session/
-const oneDay = 1000 * 60 * 60 * 24;
-app.use(sessions({
-    secret: secretsJson.secret,
-    saveUninitialized: true,
-    cookie: { maxAge: oneDay },
-    resave: false
-}))
 
-
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/projects', projectRouter);
 
 
 // catch 404 and forward to error handler
@@ -68,4 +95,5 @@ app.use(function(err, req, res, next) {
     });
 });
 
-module.exports = app;
+
+module.exports =  app ;

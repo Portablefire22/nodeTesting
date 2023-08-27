@@ -58,9 +58,7 @@ app.use(session({
 app.use(async function(req,res,next){
     try {
         if (!(typeof(req.session.userId) === 'undefined')){
-            console.log(req.session.userId);
-            console.log(await db.getUserById(req.session.userId[0].id));
-            res.locals.user = {username: (await db.getUserById(req.session.userId[0].id))[0].username}; 
+            res.locals.user = {username: (await db.getUserById(req.session.userId))[0].username}; 
         } else {
             res.locals.user = {username: null};
         }

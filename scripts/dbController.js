@@ -27,4 +27,8 @@ db.getIdFromUsername = async function(username){
     return await pool.query('SELECT id FROM User WHERE username = ?', [username]);
 }
 
+db.getUserByName = async function(username){
+    return await pool.query('SELECT * FROM User WHERE username = ?', [username]);
+}
+
 module.exports = db;

@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var app = require('./../app.js');
 const db = require('./../scripts/dbController.js');
+const bcrypt = require('bcrypt');
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -15,19 +17,32 @@ router.get('/login', function(req, res, next) {
     res.render('pages/login');
 });
 
-router.post('/login', express.urlencoded({extended: false}), function(req, res, next) {
-    
-    // Regenerate session
-    req.session.regenerate(function (err) {
-        if (err) { next(err); }
+router.post('/login', express.urlencoded({extended: false}), async function(req, res, next) {
+   
 
-        req.session.user = req.body.user;
-        
-        // Save then redirect
+    // OKAY lets add authentication because rn you can just log into anything with just the username
+    //
+    // If passwords are equal
+    const user = (await db.getUserByName(req.body.username))[0];
+
+    if (typeof(user) === 'undefined') {
+        return res.render('pages/login', {error:"User not found!"});
+    }
+
+    if (await bcrypt.compare(req.body.password, user.password)) {
+
+    } else {
+        res.render('pages/login', {error:"Username and password do not match!"});
+    }
+
+    // Regenerate session
+    req.session.regenerate(async function (err) {
+        if (err) { next(err); }
+        req.session.userId = (await db.getUserByName(req.body.username))[0].id;
+                // Save then redirect
         req.session.save(function(err) {
             if (err) { return next(err); }
-            console.log(`Got information: `, req.body);
-            res.redirect('/');
+                res.redirect('/');
         })
     });
     
@@ -46,8 +61,7 @@ router.post('/register', async (req, res) =>{
         } else if (!(password === passwordSanity)) {
             return res.render('pages/register', {error: 'Passwords are not equal! \n How did this happen?'});
         }
-        console.log(Object.keys(await db.getUserByEmail(email)));
-        console.log(Object.keys(await db.getUserByEmail(email)).length);
+
         if (Object.keys(await db.getUserByEmail(email)).length >= 1) {
             return res.render('pages/register', {error: "Email already exists!"});
         }
@@ -55,11 +69,12 @@ router.post('/register', async (req, res) =>{
             return res.render('pages/register', {error: "Username already exists!"});
         }
         // Okay so at this point everything should be 100% good
-        const user =  await db.insertUser(username, email, password);
+        const finishedPassword = await bcrypt.hash(password, 10);
+
+        const user =  await db.insertUser(username, email, finishedPassword);
         user.id = await db.getIdFromUsername(username);
         req.session.userId = user.id;
-        console.log(req.body);
-        console.log(req.session);
+
         return res.redirect('/');
     }
     catch(e){
@@ -80,9 +95,15 @@ router.get('/logout', function(req, res, next) {
     })
 });
 
-function isAuthenticated(req, res, next) {
-    if (req.session.user) { next(); } 
-    else { next('route'); }
+function comparePassword(plaintextPassword, hash) {
+    bcrypt.compare(plaintextPassword, hash)
+      .then(result => {
+        return result
+    })
+    .catch(err => {
+        console.log(err)
+    })
 }
+
 
 module.exports = router;
